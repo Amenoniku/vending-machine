@@ -12,7 +12,7 @@
             type="text"
             placeholder="..."
             :disabled="product || isMaxPrice"
-            @keyup.enter="addBanknote()"
+            @keyup.enter="addBanknoteWrapp()"
           />
         </div>
         <span class="form__desc">
@@ -47,7 +47,7 @@
             type="text"
             :disabled="product || !isMinPrice"
             placeholder="."
-            @keyup.enter="chooseProduct()"
+            @keyup.enter="chooseProductWrapp()"
           />
         </div>
       </div>
@@ -130,40 +130,36 @@ export default {
     ...mapGetters("controlPanel", ["minPrice", "maxPrice", "banknotesSummary"])
   },
   methods: {
-    addBanknote() {
-      const banknote = +this.banknoteAcceptor;
-      if (this.availableBanknotes.some(someItem => someItem === banknote)) {
-        this.ADD_BANKNOTE(banknote);
-        this.unavailableBanknote = false;
-      } else {
+    addBanknoteWrapp() {
+      this.unavailableBanknote = false;
+      try {
+        this.addBanknote(+this.banknoteAcceptor);
+      } catch (error) {
         this.unavailableBanknote = true;
         setTimeout(() => {
           this.unavailableBanknote = false;
         }, this.errorTime);
       }
     },
-    chooseProduct() {
+    chooseProductWrapp() {
       this.unavailableProductMessage = false;
-      const productId = +this.productId;
-      const product = this.goods.find(findItem => findItem.id === productId);
-      if (product) {
-        if (this.banknotesSummary >= product.price) {
-          this.ADD_PRODUCT(product);
-        } else {
-          this.unavailableProductMessage = "Not enough money!";
-          setTimeout(() => {
-            this.unavailableProductMessage = false;
-          }, this.errorTime);
-        }
-      } else {
-        this.unavailableProductMessage = "Enter the correct number!";
+      try {
+        this.chooseProduct(+this.productId);
+      } catch (error) {
+        this.unavailableProductMessage = error;
         setTimeout(() => {
           this.unavailableProductMessage = false;
         }, this.errorTime);
       }
     },
-    takeProduct() {},
-    // ...mapActions("controlPanel", ["addBanknote"]),
+    takeProduct() {
+      this.removeProduct();
+    },
+    ...mapActions("controlPanel", [
+      "addBanknote",
+      "chooseProduct",
+      "removeProduct"
+    ]),
     ...mapMutations("controlPanel", ["ADD_BANKNOTE", "ADD_PRODUCT"])
   }
 };

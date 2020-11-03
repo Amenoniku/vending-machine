@@ -1,9 +1,9 @@
 const state = {
   availableBanknotes: [50, 100, 200, 500, 1000],
   availableCoins: [1, 2, 5, 10],
-  banknotes: [],
+  banknotes: [200],
   product: null,
-  changes: []
+  changes: [{ type: 2, coins: 10 }]
 };
 
 const mutations = {
@@ -18,10 +18,48 @@ const mutations = {
   },
   REMOVE_PRODUCT(state) {
     state.product = null;
+  },
+  ADD_CHANGES(state, changes) {
+    state.changes = changes;
+  },
+  REMOVE_CHANGES(state) {
+    state.changes = [];
   }
 };
 
-const actions = {};
+const actions = {
+  addBanknote({ state, commit }, banknote) {
+    if (state.availableBanknotes.some(someItem => someItem === banknote)) {
+      return commit("ADD_BANKNOTE", banknote);
+    } else {
+      throw Error;
+    }
+  },
+  chooseProduct({ commit, rootState, getters }, productId) {
+    const product = rootState.goods.list.find(
+      findItem => findItem.id === productId
+    );
+    if (product) {
+      if (getters.banknotesSummary >= product.price) {
+        commit("ADD_PRODUCT", product);
+      } else {
+        throw "Not enough money!";
+      }
+    } else {
+      throw "Enter the correct number!";
+    }
+  },
+
+  addChanges({ commit }) {
+    let changes = [];
+    commit("ADD_CHANGES", changes);
+  },
+  removeProduct({ commit }) {
+    commit("REMOVE_BANKNOTE");
+    commit("REMOVE_PRODUCT");
+    commit("REMOVE_CHANGES");
+  }
+};
 
 const getters = {
   minPrice: (state, getters, rootState) => {
