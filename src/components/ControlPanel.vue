@@ -154,6 +154,8 @@ export default {
     },
     takeProduct() {
       this.removeProduct();
+      this.banknoteAcceptor = null;
+      this.productId = null;
     },
     ...mapActions("controlPanel", [
       "addBanknote",
