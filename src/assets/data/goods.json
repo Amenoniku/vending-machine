@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1,
+    "name": "Cola",
+    "description": "Cold drink",
+    "price": 130,
+    "quantity": 2
+  },
+  {
+    "id": 2,
+    "name": "Evian",
+    "description": "Water",
+    "price": 90,
+    "quantity": 4
+  },
+  {
+    "id": 3,
+    "name": "Durex",
+    "description": "Condoms",
+    "price": 600,
+    "quantity": 6
+  },
+  {
+    "id": 4,
+    "name": "Snickers",
+    "description": "Choco bar",
+    "price": 105,
+    "quantity": 12
+  },
+  {
+    "id": 5,
+    "name": "Wagon Wheels",
+    "description": "Choco cookies",
+    "price": 165,
+    "quantity": 1
+  },
+  {
+    "id": 6,
+    "name": "WTF, Alice?",
+    "description": "I don't know",
+    "price": 200,
+    "quantity": 8
+  },
+  {
+    "id": 8,
+    "name": "Fanta",
+    "description": "Cold drink",
+    "price": 130,
+    "quantity": 34
+  }
+]
