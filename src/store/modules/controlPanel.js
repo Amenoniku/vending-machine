@@ -7,21 +7,21 @@ const state = {
 };
 
 const mutations = {
-  SET_LIST(state, list) {
-    state.list = list;
+  ADD_BANKNOTE(state, banknote) {
+    state.banknotes.push(banknote);
+  },
+  REMOVE_BANKNOTE(state) {
+    state.banknotes = [];
+  },
+  ADD_PRODUCT(state, product) {
+    state.product = product;
+  },
+  REMOVE_PRODUCT(state) {
+    state.product = null;
   }
 };
 
-const actions = {
-  async getList({ commit }) {
-    try {
-      const goods = require("@/assets/data/goods.json");
-      commit("SET_LIST", goods);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-};
+const actions = {};
 
 const getters = {
   minPrice: (state, getters, rootState) => {
