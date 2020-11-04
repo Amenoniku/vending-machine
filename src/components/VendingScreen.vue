@@ -3,7 +3,12 @@
     <div class="page__showcase-body">
       <ul class="product-list">
         <li v-for="item in list" :key="item.id" class="product-list__item">
-          <div class="product">
+          <div
+            :class="[
+              'product',
+              banknotesSummary <= item.price || 'product_active'
+            ]"
+          >
             <span class="product__name">{{ item.name }}</span>
             <span class="product__desc">{{ item.description }}</span>
             <span class="product__price">{{ item.price }} R</span>
@@ -16,11 +21,12 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "VendingScreen",
   computed: {
-    ...mapState("goods", ["list"])
+    ...mapState("goods", ["list"]),
+    ...mapGetters("controlPanel", ["banknotesSummary"])
   }
 };
 </script>

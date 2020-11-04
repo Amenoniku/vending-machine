@@ -1,9 +1,9 @@
 const state = {
   availableBanknotes: [50, 100, 200, 500, 1000],
   availableCoins: [1, 2, 5, 10],
-  banknotes: [200],
+  banknotes: [],
   product: null,
-  changes: [{ type: 2, coins: 10 }]
+  changes: []
 };
 
 const mutations = {
@@ -35,12 +35,13 @@ const actions = {
       throw Error;
     }
   },
-  chooseProduct({ commit, rootState, getters }, productId) {
+  chooseProduct({ commit, rootState, getters, dispatch }, productId) {
     const product = rootState.goods.list.find(
       findItem => findItem.id === productId
     );
     if (product) {
       if (getters.banknotesSummary >= product.price) {
+        dispatch("addChanges", product.price);
         commit("ADD_PRODUCT", product);
       } else {
         throw "Not enough money!";
@@ -49,9 +50,17 @@ const actions = {
       throw "Enter the correct number!";
     }
   },
-
-  addChanges({ commit }) {
+  addChanges({ state, commit, getters }, price) {
+    const availableCoinsReverse = [...state.availableCoins].reverse();
     let changes = [];
+    let divisionArray = [null, getters.banknotesSummary - price];
+    let step = 0;
+    while (divisionArray[1] !== undefined) {
+      let coinType = availableCoinsReverse[step];
+      divisionArray = (divisionArray[1] / coinType).toString().split(".");
+      changes.push({ type: coinType, coins: divisionArray[0] });
+      step++;
+    }
     commit("ADD_CHANGES", changes);
   },
   removeProduct({ commit }) {
